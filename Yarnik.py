@@ -59,7 +59,7 @@ selectedVertices[0] = 0
 # первая итерация - запускаем цикл поиска самого дешёвого ребра, инцидентного ей.
 # для этого сравниваем числа в строке, соответствующей номеру вершины
 first_iteration_result = searching_for_the_most_cheap(adjacencyMatrix[0])[0]
-selectedVertices.append(first_iteration_result[0])
+selectedVertices.append(first_iteration_result)
 adjacencyList[0].append(first_iteration_result)
 adjacencyList[first_iteration_result].append(0)
 
@@ -74,7 +74,9 @@ for n in range(numOfStrings - 1):
     # каждый из списков [result, min], среди которых - определивший результат
     for m in selectedVertices:
         dictOfTempCostsAndInd[m] = searching_for_the_most_cheap(adjacencyMatrix[m])
+    # список int
     listOfTempCosts = [0 for x in range(len(selectedVertices))]
+    # список int
     listOfTempIndexes = [0 for x in range(len(selectedVertices))]
     # отдельно выделяем стоимости
     for p in range(len(selectedVertices)):
@@ -91,9 +93,10 @@ for n in range(numOfStrings - 1):
     adjacencyList[desiredInd].append(initialIndex)
 
 
-
+for index in adjacencyList:
+    print (index)
 # создаём список списков, длиной = numOfStrings, элемент - список смежных данной вершин
-f = open('out.txt', 'w')
+# f = open('out.txt', 'w')
 # TODO
-# for index in l:
-#    f.write(index + '\n')
+# for index in adjacencyList:
+#    f.write(index + ' 0\n')
