@@ -24,7 +24,7 @@ def searching_for_the_most_cheap(list_of_costs):
 
 
 # возвращает строку, в которой находится элемент с известным столбцовым индексом
-def searching_for_dammit_index(column_ind, its_value):
+def searching_for_damn_index(column_ind, its_value):
     for i in range(len(numOfStrings)):
         if adjacencyMatrix[i][column_ind] == its_value:
             return i
@@ -74,13 +74,13 @@ for n in range(numOfStrings - 1):
     # каждый из списков [result, min], среди которых - определивший результат
     for m in selectedVertices:
         dictOfTempCostsAndInd[m] = searching_for_the_most_cheap(adjacencyMatrix[m])
-    print(dictOfTempCostsAndInd)
-    # список int
+    print("dictOfTempCostsAndInd", dictOfTempCostsAndInd)
     listOfTempCosts = [0 for x in range(len(selectedVertices))]
-    # список int
     listOfTempIndexes = [0 for x in range(len(selectedVertices))]
     # отдельно выделяем стоимости
     for p in range(len(selectedVertices)):
+        # TODO KeyError: 1
+        print("dictOfTempCostsAndInd[p][1]", dictOfTempCostsAndInd[p][1])
         listOfTempCosts[p] = dictOfTempCostsAndInd[p][1]
         listOfTempIndexes[p] = dictOfTempCostsAndInd[p][0]
     tempList = searching_for_the_most_cheap(listOfTempCosts)
@@ -89,7 +89,7 @@ for n in range(numOfStrings - 1):
     # индекс искомой стоимости в изначальном списке
     desiredInd = listOfTempIndexes[tempInd]
     selectedVertices.append(desiredInd)
-    initialIndex = searching_for_dammit_index(desiredInd, tempList[1])
+    initialIndex = searching_for_damn_index(desiredInd, tempList[1])
     adjacencyList[initialIndex].append(desiredInd)
     adjacencyList[desiredInd].append(initialIndex)
 
