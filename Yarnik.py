@@ -5,8 +5,8 @@
 
 
 # вычисляем расстояние
-def distance(x, y):
-    return abs(x[0] - x[1]) + abs(y[0] - y[1])
+def distance(first_point, second_point):
+    return abs(first_point[0] - second_point[0]) + abs(first_point[1] - second_point[1])
 
 
 # возвращает [индекс вершины, вес ребра до неё]
@@ -16,10 +16,10 @@ def searching_for_the_most_cheap(list_of_costs):
         mini = list_of_costs[resultind]
     else:
         mini = list_of_costs[resultind + 1]
-    for i in range(1, len(list_of_costs)):
-        if (list_of_costs[i] < mini) and (list_of_costs[i] > 0) and list_of_costs[i] not in selectedVertices:
-            mini = list_of_costs[i]
-            resultind = i
+    for im in range(1, len(list_of_costs)):
+        if (list_of_costs[im] < mini) and (list_of_costs[im] > 0) and (list_of_costs[im] not in selectedVertices):
+            mini = list_of_costs[im]
+            resultind = im
     return [resultind, mini]
 
 
@@ -35,7 +35,7 @@ dictOfCoordinates = {}
 for i in range(numOfStrings):
     tempStr = f.readline().split()
     dictOfCoordinates[i] = [int(tempStr[0]), int(tempStr[1])]
-
+print("dictOfCoordinates", dictOfCoordinates)
 f.close()
 
 # для работы
@@ -47,11 +47,11 @@ for n in range(numOfStrings):
     for p in range(numOfStrings):
         if n == p:
             adjacencyMatrix[n][p] = 0
-        elif p > n:
+        elif n > p:
             adjacencyMatrix[n][p] = adjacencyMatrix[p][n]
         else:
             adjacencyMatrix[n][p] = distance(dictOfCoordinates[n], dictOfCoordinates[p])
-
+print("adjacencyMatrix", adjacencyMatrix)
 # выбираем начальную точку
 selectedVertices = [0]
 selectedVertices[0] = 0
@@ -74,6 +74,7 @@ for n in range(numOfStrings - 1):
     # каждый из списков [result, min], среди которых - определивший результат
     for m in selectedVertices:
         dictOfTempCostsAndInd[m] = searching_for_the_most_cheap(adjacencyMatrix[m])
+    print(dictOfTempCostsAndInd)
     # список int
     listOfTempCosts = [0 for x in range(len(selectedVertices))]
     # список int
