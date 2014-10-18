@@ -11,16 +11,23 @@ def distance(first_point, second_point):
 
 # возвращает [индекс вершины, вес ребра до неё]
 def searching_for_the_most_cheap(list_of_costs):
+    if len(list_of_costs) == 5:
+        print("costs", list_of_costs)
     resultind = 0
     if list_of_costs[resultind] != 0:
         mini = list_of_costs[resultind]
     else:
         mini = list_of_costs[resultind + 1]
-    for im in range(1, len(list_of_costs)):
-        if (list_of_costs[im] < mini) and (list_of_costs[im] > 0) and (im not in selectedVertices):
-            print(im, "element =", list_of_costs[im], "is not in", selectedVertices, im not in selectedVertices)
+        resultind += 1
+    for im in range(len(list_of_costs)):
+        if (list_of_costs[im] < mini) and (list_of_costs[im] != 0) and (im not in selectedVertices):
+            print(im, "element =", list_of_costs[im], "is not in", selectedVertices)
             mini = list_of_costs[im]
             resultind = im
+        elif (list_of_costs[im] == mini) and (list_of_costs[im] != 0) and (im not in selectedVertices):
+            mini = list_of_costs[im]
+            resultind = im
+    print("The most cheap is", mini)
     return [resultind, mini]
 
 
@@ -52,7 +59,7 @@ for n in range(numOfStrings):
             adjacencyMatrix[n][p] = adjacencyMatrix[p][n]
         else:
             adjacencyMatrix[n][p] = distance(dictOfCoordinates[n], dictOfCoordinates[p])
-# print("adjacencyMatrix", adjacencyMatrix)
+print("adjacencyMatrix", adjacencyMatrix)
 # выбираем начальную точку
 selectedVertices = [0]
 selectedVertices[0] = 0
@@ -68,7 +75,8 @@ adjacencyList[first_iteration_result].append(0)
 # условие остановки: len(selectedVertices) = numOfStrings
 # глобальный цикл
 for n in range(numOfStrings - 1):
-    print("selected vertices:", selectedVertices)
+    print("------")
+    print(n + 2, "step, selected vertices:", selectedVertices)
     dictOfTempCostsAndInd = {}
     # тут мы получаем m=len(selectedVertices) списков вида "n" : [result, min] (ключ - вершина из selectedVertices)
     # нам нужно выбрать наименьший min и добавить к selectedVertices соответствующий ему result
@@ -82,7 +90,6 @@ for n in range(numOfStrings - 1):
     # отдельно выделяем стоимости
     d = 0
     for p in selectedVertices:
-        print("p", p, "dictOfTempCostsAndInd[p][1]", dictOfTempCostsAndInd[p][1])
         listOfTempCosts[d] = dictOfTempCostsAndInd[p][1]
         listOfTempIndexes[d] = dictOfTempCostsAndInd[p][0]
         d += 1
@@ -98,7 +105,7 @@ for n in range(numOfStrings - 1):
 
 
 for index in adjacencyList:
-    print (index)
+    print(index)
 # создаём список списков, длиной = numOfStrings, элемент - список смежных данной вершин
 # f = open('out.txt', 'w')
 # TODO
