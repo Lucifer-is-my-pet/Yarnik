@@ -17,7 +17,8 @@ def searching_for_the_most_cheap(list_of_costs):
     else:
         mini = list_of_costs[resultind + 1]
     for im in range(1, len(list_of_costs)):
-        if (list_of_costs[im] < mini) and (list_of_costs[im] > 0) and (list_of_costs[im] not in selectedVertices):
+        if (list_of_costs[im] < mini) and (list_of_costs[im] > 0) and (im not in selectedVertices):
+            print(im, "element =", list_of_costs[im], "is not in", selectedVertices, im not in selectedVertices)
             mini = list_of_costs[im]
             resultind = im
     return [resultind, mini]
@@ -25,9 +26,9 @@ def searching_for_the_most_cheap(list_of_costs):
 
 # возвращает строку, в которой находится элемент с известным столбцовым индексом
 def searching_for_damn_index(column_ind, its_value):
-    for i in range(numOfStrings):
-        if adjacencyMatrix[i][column_ind] == its_value:
-            return i
+    for ind in range(numOfStrings):
+        if adjacencyMatrix[ind][column_ind] == its_value:
+            return ind
 
 f = open('in.txt', 'r')
 numOfStrings = int(f.readline())
@@ -35,7 +36,7 @@ dictOfCoordinates = {}
 for i in range(numOfStrings):
     tempStr = f.readline().split()
     dictOfCoordinates[i] = [int(tempStr[0]), int(tempStr[1])]
-print("dictOfCoordinates", dictOfCoordinates)
+# print("dictOfCoordinates", dictOfCoordinates)
 f.close()
 
 # для работы
@@ -51,7 +52,7 @@ for n in range(numOfStrings):
             adjacencyMatrix[n][p] = adjacencyMatrix[p][n]
         else:
             adjacencyMatrix[n][p] = distance(dictOfCoordinates[n], dictOfCoordinates[p])
-print("adjacencyMatrix", adjacencyMatrix)
+# print("adjacencyMatrix", adjacencyMatrix)
 # выбираем начальную точку
 selectedVertices = [0]
 selectedVertices[0] = 0
@@ -67,6 +68,7 @@ adjacencyList[first_iteration_result].append(0)
 # условие остановки: len(selectedVertices) = numOfStrings
 # глобальный цикл
 for n in range(numOfStrings - 1):
+    print("selected vertices:", selectedVertices)
     dictOfTempCostsAndInd = {}
     # тут мы получаем m=len(selectedVertices) списков вида "n" : [result, min] (ключ - вершина из selectedVertices)
     # нам нужно выбрать наименьший min и добавить к selectedVertices соответствующий ему result
