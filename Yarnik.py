@@ -25,7 +25,7 @@ def searching_for_the_most_cheap(list_of_costs):
 
 # возвращает строку, в которой находится элемент с известным столбцовым индексом
 def searching_for_damn_index(column_ind, its_value):
-    for i in range(len(numOfStrings)):
+    for i in range(numOfStrings):
         if adjacencyMatrix[i][column_ind] == its_value:
             return i
 
@@ -78,11 +78,12 @@ for n in range(numOfStrings - 1):
     listOfTempCosts = [0 for x in range(len(selectedVertices))]
     listOfTempIndexes = [0 for x in range(len(selectedVertices))]
     # отдельно выделяем стоимости
-    for p in range(len(selectedVertices)):
-        # TODO KeyError: 1
-        print("dictOfTempCostsAndInd[p][1]", dictOfTempCostsAndInd[p][1])
-        listOfTempCosts[p] = dictOfTempCostsAndInd[p][1]
-        listOfTempIndexes[p] = dictOfTempCostsAndInd[p][0]
+    d = 0
+    for p in selectedVertices:
+        print("p", p, "dictOfTempCostsAndInd[p][1]", dictOfTempCostsAndInd[p][1])
+        listOfTempCosts[d] = dictOfTempCostsAndInd[p][1]
+        listOfTempIndexes[d] = dictOfTempCostsAndInd[p][0]
+        d += 1
     tempList = searching_for_the_most_cheap(listOfTempCosts)
     # индекс искомой стоимости в промежуточном массиве
     tempInd = listOfTempCosts.index(tempList[1])
