@@ -12,10 +12,10 @@ def distance(first_point, second_point):
 # возвращает [индекс вершины, вес ребра до неё]
 def searching_for_the_cheapest(dict_of_costs):
     resultind = list(dict_of_costs.keys())[0]
-    mini = dict_of_costs[resultind]
+    mini = dict_of_costs[resultind][0]
     for im in list(dict_of_costs.keys()):
-        if dict_of_costs[im] < mini:
-            mini = dict_of_costs[im]
+        if dict_of_costs[im][0] < mini:
+            mini = dict_of_costs[im][0]
             resultind = im
     return resultind
 
@@ -29,7 +29,7 @@ for i in range(numOfStrings):
 # print("dictOfCoordinates", dictOfCoordinates)
 f.close()
 
-# для работы
+# для работы; {до какой вершины : [сколько, от какой]}
 dictOfCosts = {}
 
 # выбираем начальную точку
@@ -38,8 +38,8 @@ selectedVertices = [0]
 adjacencyList = [[] for y in range(numOfStrings)]
 
 for v in range(1, numOfStrings):
-    dictOfCosts[v] = distance(dictOfCoordinates[0], dictOfCoordinates[v])
-print("dictOfCosts", dictOfCosts)
+    dictOfCosts[v] = [distance(dictOfCoordinates[0], dictOfCoordinates[v]), 0]
+# print("dictOfCosts", dictOfCosts)
 
 # первая итерация - запускаем цикл поиска самого дешёвого ребра, инцидентного ей.
 # для этого сравниваем числа в строке, соответствующей номеру вершины
@@ -53,28 +53,27 @@ dictOfCosts.pop(first_iteration_result)
 # условие остановки: len(selectedVertices) = numOfStrings
 # глобальный цикл
 for n in range(numOfStrings - 2):
-    print("------")
+    # print("------")
     for m in list(dictOfCosts.keys()):
         tempCost = distance(dictOfCoordinates[selectedVertices[-1]], dictOfCoordinates[m])
-        if tempCost < dictOfCosts[m]:
-            dictOfCosts[m] = tempCost
-    print("dictOfCosts before", dictOfCosts)
+        if tempCost < dictOfCosts[m][0]:
+            dictOfCosts[m] = [tempCost, selectedVertices[-1]]
+    # print("dictOfCosts before", dictOfCosts)
 
     # ищем наименьшее из посчитанных расстояний
     newVertice = searching_for_the_cheapest(dictOfCosts)
+    adjacencyList[dictOfCosts[newVertice][1]].append(newVertice)
+    adjacencyList[newVertice].append(dictOfCosts[newVertice][1])
     selectedVertices.append(newVertice)
-    adjacencyList[selectedVertices[-1]].append(newVertice)
-    adjacencyList[newVertice].append(selectedVertices[-1])
     dictOfCosts.pop(newVertice)
-    print("dictOfCosts after", dictOfCosts)
-    print(n + 2, "step, selected vertices:", selectedVertices)
-    for index in adjacencyList:
-        print(index)
+    # print("dictOfCosts after", dictOfCosts)
+    # print(n + 2, "step, selected vertices:", selectedVertices)
 
-# for index in adjacencyList:
-#     print(index)
-# создаём список списков, длиной = numOfStrings, элемент - список смежных данной вершин
-# f = open('out.txt', 'w')
-# TODO
-# for index in adjacencyList:
-#    f.write(index + ' 0\n')
+for index in adjacencyList:
+    print(index)
+
+f = open('out.txt', 'w')
+for index in adjacencyList:
+    for v in index:
+        f.write(str(v) + " ")
+    f.write("0\n")
