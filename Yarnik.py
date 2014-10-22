@@ -31,22 +31,24 @@ f.close()
 
 # для работы; {до какой вершины : [сколько, от какой]}
 dictOfCosts = {}
-
-# выбираем начальную точку
-selectedVertices = [0]
 # для вывода в файл
 adjacencyList = [[] for y in range(numOfStrings)]
+# вес
+weight = 0
 
 for v in range(1, numOfStrings):
     dictOfCosts[v] = [distance(dictOfCoordinates[0], dictOfCoordinates[v]), 0]
-# print("dictOfCosts", dictOfCosts)
 
+
+# выбираем начальную точку
+selectedVertices = [0]
 # первая итерация - запускаем цикл поиска самого дешёвого ребра, инцидентного ей.
 # для этого сравниваем числа в строке, соответствующей номеру вершины
 first_iteration_result = searching_for_the_cheapest(dictOfCosts)
 selectedVertices.append(first_iteration_result)
 adjacencyList[0].append(first_iteration_result)
 adjacencyList[first_iteration_result].append(0)
+weight += dictOfCosts[first_iteration_result][0]
 dictOfCosts.pop(first_iteration_result)
 
 # далее повторяем процедуру, но уже для двух точек: начальной и добавленной (и так далее)
@@ -65,15 +67,18 @@ for n in range(numOfStrings - 2):
     adjacencyList[dictOfCosts[newVertice][1]].append(newVertice)
     adjacencyList[newVertice].append(dictOfCosts[newVertice][1])
     selectedVertices.append(newVertice)
+    weight += dictOfCosts[newVertice][0]
     dictOfCosts.pop(newVertice)
     # print("dictOfCosts after", dictOfCosts)
     # print(n + 2, "step, selected vertices:", selectedVertices)
 
 for index in adjacencyList:
-    print(index)
+    index.sort()
 
 f = open('out.txt', 'w')
 for index in adjacencyList:
     for v in index:
-        f.write(str(v) + " ")
+        f.write(str(v + 1) + " ")
     f.write("0\n")
+f.write(str(weight))
+f.close()
